@@ -1,0 +1,7 @@
+token.txt
+3ainf/*
+!3ainf/*.sh
+!3ainf/input_*.txt
+4ainf/*
+!4ainf/*.sh
+!4ainf/input_*.txt
