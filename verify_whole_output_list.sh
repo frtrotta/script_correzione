@@ -116,14 +116,14 @@ while read user
 do
 	user_n=$((user_n+1))
 	user_repository_path="${user_dir}/${user}/${repository}"
-	if [ -d ${user_repository_path} ] # Check the existence of the repository
+	if [ -d "${user_repository_path}" ] # Check the existence of the repository
 	then
 #		cd ${user_repository_path}
 #		make -f nbproject/Makefile-Debug.mk &>/dev/null
 #		if [ $? -eq 0 ] # Compile the repository
 #		then
-			exe_path=`${find_exe_path_script} ${repository_path}`
-			if [ -x ${exe_path} ]
+			exe_path=`${find_exe_path_script} ${user_repository_path}`
+			if [ -x "${exe_path}" ]
 			then
 				user_output=${user_repository_path}/`basename ${input_file}`_output
 				${exe_path} <${input_file} >${user_output}
@@ -133,20 +133,20 @@ do
 					echo "${user_n}: $user OK"
 					compliant_n=$((compliant_n+1))
 				else
-					echo "${user_n}: ERROR: $user has a different output"
+					echo "${user_n}: $user ERROR (different output)"
 					not_compliant_n=$((not_compliant_n+1))
 				fi
 				rm ${user_output}
 			else
-			    echo "${user_n}: ERROR: unable to find EXE in $repository for $user"
+			    echo "${user_n}: $user ERROR (unable to find EXE in $repository)"
 			fi
 #		else
 #			echo "${user_n}: ERROR: unable compile $repository for $user"
 #		fi
 	else
-		echo "${user_n}: ERROR: unable to find path ${user_repository_path}"
+		echo "${user_n}: $user ERROR (unable to find path ${user_repository_path})"
 	fi
 done < $user_list
 rm ${reference_output}
-echo "Total: ${user_n} - Compliant: ${compliant_n} - Not compliant: ${not_compliant_n}"
+echo "Total: ${user_n} - Compliant: ${compliant_n} - Not compliant: ${not_compliant_n} - Other: $((user_n-compliant_n-not_compliant_n))"
 exit ${compliant_n}

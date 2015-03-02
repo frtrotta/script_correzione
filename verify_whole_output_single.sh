@@ -52,25 +52,25 @@ fi
 ##################################
 
 # Check the existence of file and directories
-if [ ! -d $repository_path ]
+if [ ! -d "$repository_path" ]
 then
     echo "ERROR: unable to find repository $repository_path"
     exit 102
 fi
 
-if [ ! -d $script_path ]
+if [ ! -d "$script_path" ]
 then
     echo "ERROR: unable to find the path of the scripts $script_path"
     exit 103
 fi
 
-if [ ! -f $input_file ]
+if [ ! -f "$input_file" ]
 then
     echo "ERROR: unable to find the input file $input_file"
     exit 104
 fi
 
-if [ ! -d $user_dir ]
+if [ ! -d "$user_dir" ]
 then
     echo "ERROR: unable to find the user dir $user_dir"
     exit 105
@@ -102,8 +102,8 @@ then
 #		make -f nbproject/Makefile-Debug.mk &>/dev/null
 #		if [ $? -eq 0 ] # Compile the repository
 #		then
-		exe_path=`${find_exe_path_script} ${repository_path}`
-		if [ -x ${exe_path} ]
+		exe_path=`${find_exe_path_script} ${user_repository_path}`
+		if [ -x "${exe_path}" ]
 		then
 			user_output=${user_repository_path}/`basename ${input_file}`_output
 			${exe_path} <${input_file} >${user_output}
