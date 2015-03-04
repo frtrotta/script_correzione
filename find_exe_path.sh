@@ -26,7 +26,7 @@ fi
 
 # Make the toolchain array
 declare -a toolchain
-toolchain=("Cygwin_4.x-Windows" "Cygwin_4.x_1-Windows" "GNU-Linux-x86" "Cygwin-Windows")
+toolchain=("Cygwin_4.x-Windows" "Cygwin_4.x_1-Windows" "GNU-Linux-x86" "Cygwin-Windows" "GNU-MacOSX")
 #    for (( i = 0 ; i < ${#toolchain[@]} ; i++ ))
 #    do
 #        echo "toolchain[$i]: ${toolchain[$i]}"
