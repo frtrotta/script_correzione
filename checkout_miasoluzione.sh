@@ -1,21 +1,22 @@
-echo "v0.6 - 16-feb-2015"
+echo "v1.0 - 04-mar-2015"
 repository=$1
-githubusers=$2
 tokenfile=$3
-if [ -z $repository ] || [ -z $githubusers ]
+if [ -z $repository ]
 then
 	echo "ERROR: missing parameter"
-	echo "$0 <repository> <githubusers_filename>"
+	echo "$0 <repository>"
 	exit 1
 fi
 
+githubusers="${repository}_cloned"
+
 temp='output.txt'
 curdir=`pwd`
-errorreport="$curdir/${githubusers:0:${#githubusers}-4}_miasoluzione.err"
+errorreport="$curdir/${githubusers}_miasoluzione.err"
 echo "Errorreport file is $errorreport (if created)"
 rm $errorreport &> /dev/null
 
-newusers="${githubusers:0:${#githubusers}-4}_miasoluzione.txt"
+newusers="${githubusers}_miasoluzione"
 rm $newusers &> /dev/null
 
 declare -a possible_branches=( 'miasoluzione' 'miaSoluzione' 'Miasoluzione' 'MiaSoluzione' )

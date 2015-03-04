@@ -1,5 +1,5 @@
 #!/bin/bash
-echo 'v1.0 - 23-feb-2015'
+echo 'v1.1 - 04-mar-2015'
 repository=$1
 githubusers=$2
 tokenfile=$3
@@ -15,10 +15,10 @@ echo "$token"
 
 temp='output.txt'
 curdir=`pwd`
-errorreport="$curdir/${githubusers:0:${#githubusers}-4}.${repository}_cloned.err"
+errorreport="$curdir/${githubusers}_cloned.err"
 rm $errorreport &> /dev/null
 
-newusers="${githubusers:0:${#githubusers}-4}.${repository}_cloned.txt"
+newusers="${repository}_cloned"
 rm $newusers &> /dev/null
 
 n=0

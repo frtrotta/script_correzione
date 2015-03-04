@@ -1,1 +1,2 @@
-../verify_whole_output_list.sh ../../Ver20150220_01 input_Ver20150220_01.txt . 3ainf.01.Ver20150220_01_cloned_miasoluzione_compiled.txt
+#!/bin/bash
+../verify_whole_output_list.sh ../../Ver20150220_01 input_Ver20150220_01.txt .

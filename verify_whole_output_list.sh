@@ -1,16 +1,15 @@
 #!/bin/bash
-# v0.1 - 23-feb-2015
+# v1.0 - 04-mar-2015
 #
 
 cur_dir=`pwd`
 repository_path=$1
 input_file=$2
 user_dir=$3
-user_list=$4
-if [ -z $repository_path ] || [ -z $input_file ] || [ -z $user_dir ] || [ -z $user_list ]
+if [ -z $repository_path ] || [ -z $input_file ] || [ -z $user_dir ]
 then
     echo 'ERROR: missing parameter'
-    echo "$0 <reference_repository_path> <input_file> <user_dir> <user_list>"
+    echo "$0 <reference_repository_path> <input_file> <user_dir>"
     echo 'Returns the number of compliant outputs'
     exit 101
 fi
@@ -22,7 +21,7 @@ repository=`basename $repository_path`
 repository_parent_path=`dirname $repository_path`
 if [ "${repository_parent_path:0:1}" != '/' ]
 then
-	cd $repository_parent_path
+	cd "$repository_parent_path"
 	repository_parent_path=`pwd`
 	repository_path=${repository_parent_path}/${repository}
 fi
@@ -50,13 +49,14 @@ then
 	user_dir=${user_dir_parent_path}/`basename $user_dir`
 fi
 #
-user_list_path=`dirname $user_list`
-if [ "${user_list_path:0:1}" != '/' ]
-then
-	cd ${cur_dir}/${user_list_path}
-	user_list_path=`pwd`
-	user_list=${user_list_path}/`basename $user_list`
-fi
+user_list="${user_dir_parent_path}/${repository}_cloned_miasoluzione_compiled"
+# user_list_path=`dirname $user_list`
+# if [ "${user_list_path:0:1}" != '/' ]
+# then
+	# cd ${cur_dir}/${user_list_path}
+	# user_list_path=`pwd`
+	# user_list=${user_list_path}/`basename $user_list`
+# fi
 #
 ##################################
 
@@ -98,6 +98,8 @@ reference_output=${input_file}_referenceoutput
 ${script_path}/create_reference_output.sh ${repository_path} ${input_file} ${reference_output} 1 &>/dev/null
 ##################################
 
+
+
 #echo $reference_output
 #echo $repository_path
 #echo $script_path
@@ -122,21 +124,43 @@ do
 #		make -f nbproject/Makefile-Debug.mk &>/dev/null
 #		if [ $? -eq 0 ] # Compile the repository
 #		then
+
+	
 			exe_path=`${find_exe_path_script} ${user_repository_path}`
 			if [ -x "${exe_path}" ]
 			then
 				user_output=${user_repository_path}/`basename ${input_file}`_output
-				${exe_path} <${input_file} >${user_output}
-				diff -iZwBa ${reference_output} ${user_output} &>/dev/null
-				if [ $? -eq 0 ]
+				${exe_path} <${input_file} >${user_output} &
+				pid=$!
+				timeout=7
+				while [ $timeout -gt 0 ]
+				do
+					if [ -z "`ps -s | grep $pid`" ]
+					then
+						break
+					fi
+					sleep 1
+					timeout=$(($timeout - 1))
+				done
+				if [ $timeout -eq 0 ]
 				then
-					echo "${user_n}: $user OK"
-					compliant_n=$((compliant_n+1))
+					kill $pid
+					echo "${user_n}: $user ERROR (process killed)"
+					
 				else
-					echo "${user_n}: $user ERROR (different output)"
-					not_compliant_n=$((not_compliant_n+1))
+					diff -iZwBa ${reference_output} ${user_output} &>/dev/null
+					if [ $? -eq 0 ]
+					then
+						echo "${user_n}: $user OK"
+						compliant_n=$((compliant_n+1))
+					else
+						echo "${user_n}: $user ERROR (different output)"
+						not_compliant_n=$((not_compliant_n+1))
+					fi
 				fi
-				rm ${user_output}
+
+				rm -f ${user_output}
+				
 			else
 			    echo "${user_n}: $user ERROR (unable to find EXE in $repository)"
 			fi
