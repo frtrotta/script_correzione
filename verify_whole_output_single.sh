@@ -109,14 +109,14 @@ then
 			${exe_path} <${input_file} >${user_output}
 			diff -iZwBa ${reference_output} ${user_output}
 			r=$?
-#			if [ $? -eq 0 ]
-#			then
-#				echo "${user_n}: $user OK"
-#				compliant_n=$((compliant_n+1))
-#			else
-#				echo "${user_n}: ERROR: $user has a different output"
-#				not_compliant_n=$((not_compliant_n+1))
-#			fi
+			if [ $r -ne 0 ]
+			then
+				echo '===> USER'
+				cat ${user_output}
+				echo
+				echo '===> REFERENCE'
+				cat ${reference_output}
+			fi
 			rm ${user_output}
 		else
 		    echo "${user_n}: ERROR: unable to find EXE in $repository for $user"
@@ -130,4 +130,5 @@ else
 	echo "${user_n}: ERROR: unable to find path ${user_repository_path}"
 	r=100
 fi
+rm $reference_output
 exit $r
