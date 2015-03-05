@@ -1,4 +1,4 @@
-echo "v1.0 - 04-mar-2015"
+echo "v1.1 - 05-mar-2015"
 repository=$1
 tokenfile=$3
 if [ -z $repository ]
@@ -42,25 +42,25 @@ do
 
                 if [ -z "$branch" ]
                 then
-                    echo "==> $n: ERROR: $u/$repository remote branch miasoluzione (and similar) does not exist"
-                    echo "$u/$repository remote branch miasoluzione (and similar) does not exist" >> "$errorreport"
+                    echo "$n: $u ERROR could not find miasoluzione (and similar) branch"
+                    echo "$u could not find miasoluzione (and similar) branch" >> "$errorreport"
                 else
                     git checkout $branch &> "$temp"
                     if [ $? -eq 0 ]
                     then
                             s=$((s+1))
-                            echo "==> $n: $u/$repository $branch checked out"
+                            echo "==> $n: $u OK $branch checked out"
                             echo "$u" >> "$curdir/$newusers"
                     else
-                            echo "==> $n: ERROR: $u/$repository failed checking out $branch"
-                            echo "$u/$repository failed checking out $branch" >> "$errorreport"
+                            echo "$n: $u ERROR failed checking out $branch"
+                            echo "$u ERROR failed checking out $branch" >> "$errorreport"
                     fi
                 fi
                    
 		cd ../..
 	else
-		echo "==> $n: ERROR: unable to find dir $u"
-		echo "$u unable to find dir" >> "$errorreport"
+		echo "$n: $u ERROR: unable to find directory"
+		echo "$u unable to find directory" >> "$errorreport"
 	fi
 done < $githubusers
 echo "$n users read - $s repositories successfully checked out (miasoluzione)"

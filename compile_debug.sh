@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "v1.0 - 04-mar-2015"
+echo "v1.1 - 05-mar-2015"
 repository=$1
 if [ -z $repository ]
 then
@@ -31,16 +31,16 @@ do
 		if [ $? -eq 0 ]
 		then
 			c=$((c+1))
-			echo -e "==> $n: $u/$repository\tcompiled"
-                        echo "$u" >> "$curdir/$newusers"
+			echo -e "$n: $u\tOK"
+            echo "$u" >> "$curdir/$newusers"
 		else
-			echo -e "==> $n: ERROR: $u/$repository\tfailed compiling"
-			echo "$u/$repository failed compiling" >> "$errorreport"
+			echo -e "$n: $u\tERROR (failed compiling)"
+			echo "$u ERROR (failed compiling)" >> "$errorreport"
 		fi
 		cd ../..
 	else
-		echo "==> $n: ERROR: unable to find dir $directory"
-		echo "$u unable to find dir $directory" >> "$errorreport"
+		echo "$n: $u\tERROR (unable to find directory $directory)"
+		echo "$u ERROR (unable to find directory $directory)" >> "$errorreport"
 	fi
 done < $githubusers
 echo "$n users read - $c repositories successfully compiled"
