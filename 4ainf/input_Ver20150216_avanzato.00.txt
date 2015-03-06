@@ -1,0 +1,10 @@
+-1.4
+juventus
+4
+s
+perugia
+6
+s
+foligno
+45
+n
