@@ -33,7 +33,7 @@ then
 	input_path=`pwd`
 	input_file=${input_path}/`basename $input_file`
 fi
-output_patterns_file="${input_file}_output"
+output_patterns_file="${input_file}_outputpatterns"
 #
 user_dir_parent_path=`dirname $user_dir`
 if [ "${user_dir_parent_path:0:1}" != '/' ]
@@ -44,13 +44,6 @@ then
 fi
 #
 ##################################
-
-# Check the existence of file and directories
-# if [ ! -d "$repository_path" ]
-# then
-    # echo "ERROR: unable to find repository $repository_path"
-    # exit 102
-# fi
 
 if [ ! -d "$script_path" ]
 then
@@ -66,7 +59,7 @@ fi
 
 if [ ! -f "${output_patterns_file}" ]
 then
-    echo "ERROR: unable to find the output file ${output_file}"
+    echo "ERROR: unable to find the output patterns file ${output_patterns_file}"
     exit 105
 fi
 
@@ -83,7 +76,7 @@ find_exe_path_script="${script_path}/find_exe_path.sh"
 # The script necessarily exists here
 
 r=0
-user_repository_path="${user_dir}/${user}/${repository}"
+user_repository_path="${user_dir}/${user}/${repository_name}"
 if [ -d ${user_repository_path} ] # Check the existence of the repository
 then
 		exe_path=`${find_exe_path_script} ${user_repository_path}`
@@ -94,34 +87,28 @@ then
 			all_patterns_matched=true
 			while read pattern
 			do
-				pattern_matched=false
-				while user_line
-				do
-					if [ ! -z `echo ${user_line} | grep "$pattern"` ]
-					then
-						pattern_matched=true
-						break
-					fi
-				done <${user_output}
-				if [ ! pattern_matched ]
+				grep -qi "$pattern" ${user_output}
+				if [ $? -ne 0 ]
 				then
-					echo "ERROR: ${pattern} not found"
+					echo "ERROR: pattern \"$pattern\" not matched"
 					all_patterns_matched=false
 				fi
 			done <${output_patterns_file}
 			
-			if [ ! all_patterns_matched ]
+			if ! ${all_patterns_matched}
 			then
 				r=1
+				echo
 				echo '=====> PATTERNS'
 				cat ${output_patterns_file}
+				echo
 				echo '=====> USER OUTPUT'
 				cat ${user_output}
 			fi
 			
 			rm ${user_output}
 		else
-		    echo "${user_n}: ERROR: unable to find EXE in $repository for $user"
+		    echo "${user_n}: ERROR: unable to find EXE in ${repository_name} for $user"
 		    r=102
 		fi
 else
