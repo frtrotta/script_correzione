@@ -25,6 +25,10 @@ then
     exit 1
 fi
 
+if [ -z "$compile" ]; then
+	compile=1
+fi
+
 if [ ! -d $repository_path ]
 then
     echo "ERROR: unable to find $repository_path"

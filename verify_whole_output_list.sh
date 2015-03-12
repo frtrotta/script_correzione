@@ -49,7 +49,7 @@ then
 	user_dir=${user_dir_parent_path}/`basename $user_dir`
 fi
 #
-user_list="${user_dir_parent_path}/${repository}_cloned_miasoluzione_compiled"
+user_list="${user_dir}/${repository}_cloned_miasoluzione_compiled"
 # user_list_path=`dirname $user_list`
 # if [ "${user_list_path:0:1}" != '/' ]
 # then
