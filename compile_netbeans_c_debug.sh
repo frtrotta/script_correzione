@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "v1.1 - 05-mar-2015"
+echo "v1.2 - 14-mar-2015"
 repository=$1
 if [ -z $repository ]
 then
@@ -8,11 +8,25 @@ then
 	exit 1
 fi
 
-
+# Finding of githubusers file
+# First tries with the compiled_soluzione
 githubusers="${repository}_cloned_miasoluzione"
-temp='compile.output.txt'
+if [ ! -f "${githubusers}" ]
+then
+	# then tries with just compiled
+	githubusers="${repository}_cloned"
+	if [ ! -f "${githubusers}" ]
+	then
+		echo "ERROR: unable to find githubusers file"
+		exit 2
+	fi
+fi
+echo "$githubusers"
+
+sn=`basename $0`
+temp="${sn}.output.txt"
 curdir=`pwd`
-errorreport="$curdir/${githubusers}_compiled.err"
+errorreport="$curdir/${githubusers}_${sn}.err"
 rm $errorreport &> /dev/null
 
 newusers="${githubusers}_compiled"
@@ -22,11 +36,11 @@ n=0
 c=0
 while read u;
 do
-	n=$((n+1))
-        directory=$u/$repository/
-	cd $directory &> $temp
-	if [ $? -eq 0 ]
+	n=$((n+1))n=$((n+1))
+    directory="$u/$repository/"
+	if [ -d "$directory" ]
 	then
+		cd $directory
 		make -f "nbproject/Makefile-Debug.mk" &> $temp
 		if [ $? -eq 0 ]
 		then

@@ -5,3 +5,4 @@ token.txt
 4ainf/*
 !4ainf/*.sh
 !4ainf/input_*.txt
+4binf/*
