@@ -1,6 +1,0 @@
-/build/
-/dist/
-/*.stackdump
-/output.txt
-/compile.output.txt
-/.dep.inc

@@ -1,3 +1,0 @@
-Cloning into 'Ver20150204_avanzato'...
-remote: Repository not found.
-fatal: repository 'https://frtrotta:f98dbeb0963b8d0024c9e874021043460b79ff31@github.com/lctemperoni/Ver20150204_avanzato/' not found
