@@ -36,7 +36,7 @@ n=0
 c=0
 while read u;
 do
-	n=$((n+1))n=$((n+1))
+	n=$((n+1))
     directory="$u/$repository/"
 	if [ -d "$directory" ]
 	then
